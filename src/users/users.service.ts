@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma, User } from '@prisma/client';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { hashPassword } from 'src/utils/bcrypt';
+import { Role } from './entities/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -13,6 +14,8 @@ export class UsersService {
     const data = createUserDto;
 
     data.password = await hashPassword(createUserDto.password);
+    //data.role = createUserDto.role.toString(); // Converte a enumeração Role em string
+
     return this.prisma.user.create({
       data,
     });

@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsString, Min } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, Min } from 'class-validator';
 import { User } from '../entities/user.entity';
+import { Role } from '../entities/roles.enum';
 
 export class CreateUserDto implements User {
   id: number;
@@ -17,9 +18,9 @@ export class CreateUserDto implements User {
   @IsNotEmpty()
   fullName: string;
 
-  @IsString()
+  @IsEnum(Role) // Mantenha a validação da enumeração Role
   @IsNotEmpty()
-  role: string;
+  role: Role; // Aceita a enumeração Role
 
   @IsNotEmpty()
   @IsString()
