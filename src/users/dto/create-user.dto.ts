@@ -1,6 +1,6 @@
 import { IsEnum, IsNotEmpty, IsString, Min } from 'class-validator';
 import { User } from '../entities/user.entity';
-import { Role } from '../entities/roles.enum';
+import { Role } from '@prisma/client';
 
 export class CreateUserDto implements User {
   id: number;
