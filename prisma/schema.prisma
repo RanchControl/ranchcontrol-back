@@ -20,7 +20,7 @@ model User {
   username    String    @unique
   password    String
   fullName    String
-  role        Role
+  role        Role      @default(USER)
   phoneNumber String
   createdAt   DateTime  @default(now())
   deletedAt   DateTime?
