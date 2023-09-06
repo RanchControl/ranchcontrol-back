@@ -18,9 +18,9 @@ export class CreateUserDto implements User {
   @IsNotEmpty()
   fullName: string;
 
-  @IsEnum(Role) // Mantenha a validação da enumeração Role
+  @IsEnum(Role)
   @IsNotEmpty()
-  role: Role; // Aceita a enumeração Role
+  role: Role;
 
   @IsNotEmpty()
   @IsString()

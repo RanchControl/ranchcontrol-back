@@ -9,7 +9,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto) {
     const data = createUserDto;
 
     data.password = await hashPassword(createUserDto.password);
@@ -32,11 +32,14 @@ export class UsersService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id },
-      data: updateUserDto,
+      data: {
+        ...updateUserDto, // Copia todas as propriedades de updateUserDto
+        updateAt: new Date(), // Define updatedAt como o momento atual updateAt
+      },
     });
   }
 
-  async softDeleteUser(id: number): Promise<User> {
+  async softDeleteUser(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } });
 
     if (!user) {
