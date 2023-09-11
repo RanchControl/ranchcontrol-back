@@ -10,5 +10,20 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    networks:
+      - postgres
+  ranchcontrol:
+    image: ranchcontrol
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    networks:
+      - postgres
 volumes:
   postgres-data:
+networks:
+  postgres:
+    driver: bridge
