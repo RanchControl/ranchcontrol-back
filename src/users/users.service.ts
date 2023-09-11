@@ -34,12 +34,11 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
+    const data = updateUserDto;
+    data.password = await hashPassword(updateUserDto.password);
     return this.prisma.user.update({
       where: { id },
-      data: {
-        ...updateUserDto, // Copia todas as propriedades de updateUserDto
-        updateAt: new Date(), // Define updatedAt como o momento atual updateAt
-      },
+      data,
     });
   }
 

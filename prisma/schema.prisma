@@ -23,6 +23,6 @@ model User {
   role        Role      @default(USER)
   phoneNumber String
   createdAt   DateTime  @default(now())
-  updateAt    DateTime  @default(now())
+  updateAt    DateTime  @updatedAt
   deletedAt   DateTime?
 }
