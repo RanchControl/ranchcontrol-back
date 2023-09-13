@@ -1,18 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma, User } from '@prisma/client';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { hashPassword } from 'src/utils/bcrypt';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto) {
     const data = createUserDto;
 
     data.password = await hashPassword(createUserDto.password);
+    //data.role = createUserDto.role.toString(); // Converte a enumeração Role em string
+
     return this.prisma.user.create({
       data,
     });
@@ -23,18 +24,24 @@ export class UsersService {
     return users.map((user) => user);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.prisma.user.findUniqueOrThrow({ where: { id } });
+  }
+
+  async findByUsername(username: string) {
+    return await this.prisma.user.findUniqueOrThrow({ where: { username } });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
+    const data = updateUserDto;
+    data.password = await hashPassword(updateUserDto.password);
     return this.prisma.user.update({
       where: { id },
-      data: updateUserDto,
+      data,
     });
   }
 
-  async softDeleteUser(id: number): Promise<User> {
+  async softDeleteUser(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } });
 
     if (!user) {
