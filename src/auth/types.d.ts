@@ -4,7 +4,7 @@ interface LoginRequest {
   user: User;
 }
 
-interface Payload {
+interface JwtPayload {
   sub: number;
   username: string;
   role: Role;

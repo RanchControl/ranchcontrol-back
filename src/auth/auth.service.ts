@@ -3,7 +3,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { comparePasswords } from 'src/utils/bcrypt';
 import { User } from 'src/users/entities/user.entity';
-import { Payload } from './types';
+import { JwtPayload } from './types';
 
 @Injectable()
 export class AuthService {
@@ -24,12 +24,7 @@ export class AuthService {
   }
 
   async login(user: User) {
-    //const payload = {
-    //  sub: user.id,
-    //  username: user.username,
-    //   role: user.role,
-    // };
-    const payload: Payload = {
+    const payload: JwtPayload = {
       sub: user.id,
       username: user.username,
       role: user.role,
@@ -46,7 +41,7 @@ export class AuthService {
   }
 
   async refreshToken(user: User) {
-    const payload: Payload = {
+    const payload: JwtPayload = {
       sub: user.id,
       username: user.username,
       role: user.role,
