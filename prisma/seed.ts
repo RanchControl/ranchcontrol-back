@@ -10,15 +10,27 @@ async function main() {
     where: { username },
     update: {},
     create: {
-      username,
+      username: 'user@user.com',
       fullName: faker.person.fullName(),
-      password: faker.internet.password(),
+      password: 'password',
       role: 'USER',
       phoneNumber: faker.phone.number('849########'),
     },
   });
 
-  console.log({ seedUser });
+  const seedAdmin = await prisma.user.upsert({
+    where: { username },
+    update: {},
+    create: {
+      username: 'admin@user.com',
+      fullName: faker.person.fullName(),
+      password: 'password',
+      role: 'ADMIN',
+      phoneNumber: faker.phone.number('849########'),
+    },
+  });
+
+  console.log({ seedUser, seedAdmin });
 }
 main()
   .then(async () => {
