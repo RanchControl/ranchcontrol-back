@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFarmDto } from './dto/create-farm.dto';
 import { UpdateFarmDto } from './dto/update-farm.dto';
 import { PrismaService } from 'nestjs-prisma';
@@ -29,7 +29,17 @@ export class FarmsService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} farm`;
+  async remove(id: number) {
+    const farm = await this.prisma.farm.findUnique({ where: { id } });
+
+    if (!farm) {
+      throw new NotFoundException('Fazenda não encontrada');
+    }
+    const updatedFarm = await this.prisma.farm.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+
+    return updatedFarm;
   }
 }
