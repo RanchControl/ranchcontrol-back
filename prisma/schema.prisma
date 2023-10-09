@@ -25,4 +25,17 @@ model User {
   createdAt   DateTime  @default(now())
   updateAt    DateTime  @updatedAt
   deletedAt   DateTime?
+  farms       Farm[]
+}
+
+model Farm {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  name      String
+  CNPJ      String
+  address   String
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  deletedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id])
 }
