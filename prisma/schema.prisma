@@ -38,4 +38,15 @@ model Farm {
   updateAt  DateTime  @updatedAt
   deletedAt DateTime?
   user      User      @relation(fields: [userId], references: [id])
+  enclosures Enclosure[]
+}
+
+model Enclosure{
+  id        Int       @id @default(autoincrement())
+  farmId    Int
+  name      String
+  Type      String
+  address   String
+  farm      Farm      @relation(fields: [farmId], references: [id])
+  //Falta animal e animalId quando criar a tabela animal
 }
