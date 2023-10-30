@@ -8,8 +8,8 @@ export class EnclosureService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createEnclosureDto: CreateEnclosureDto) {
-    const enclosure = await this.prisma.enclosure.create({ data: createEnclosureDto });
-    return enclosure;
+    const data = createEnclosureDto;
+    return await this.prisma.enclosure.create({ data });
   }
 
   async findAll() {
@@ -19,25 +19,20 @@ export class EnclosureService {
   }
 
   async findOne(id: number) {
-    const enclosure = await this.findUniqueOrThrow(id);
+    const enclosure = await this.prisma.enclosure.findUniqueOrThrow({
+      where: { id },
+    });
     return enclosure;
   }
 
   async update(id: number, updateEnclosureDto: UpdateEnclosureDto) {
-    const enclosure = await this.findUniqueOrThrow(id);
-    await this.prisma.enclosure.update({ where: { id }, data: updateEnclosureDto });
-    return enclosure;
+    return await this.prisma.enclosure.update({
+      where: { id },
+      data: updateEnclosureDto,
+    });
   }
 
   async remove(id: number) {
-    const enclosure = await this.findUniqueOrThrow(id);
-    await this.prisma.enclosure.delete({ where: { id } });
-    return enclosure;
-  }
-
-  private async findUniqueOrThrow(id: number) {
-    const enclosure = await this.prisma.enclosure.findUnique({ where: { id } });
-    if (!enclosure) throw new NotFoundException(`Enclosure with ID ${id} not found`);
-    return enclosure;
+    return await this.prisma.enclosure.delete({ where: { id } });
   }
 }
