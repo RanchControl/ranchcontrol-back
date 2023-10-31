@@ -30,6 +30,11 @@ export class FarmsController {
     return this.farmsService.findOne(+id);
   }
 
+  @Get('farms-user/:userId')
+  findFarmsByUSer(@Param('userId') userId: string) {
+    return this.farmsService.findFarmsByUser(+userId);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFarmDto: UpdateFarmDto) {
     return this.farmsService.update(+id, updateFarmDto);

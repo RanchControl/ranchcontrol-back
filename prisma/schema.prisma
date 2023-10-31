@@ -32,7 +32,7 @@ model Farm {
   id         Int         @id @default(autoincrement())
   userId     Int
   name       String
-  CNPJ       String
+  cnpj       String
   address    String
   createdAt  DateTime    @default(now())
   updateAt   DateTime    @updatedAt
@@ -47,5 +47,20 @@ model Enclosure {
   name   String
   type   String
   farm   Farm   @relation(fields: [farmId], references: [id])
-  //Falta animal e animalId quando criar a tabela animal
+  Batch  Batch?
+}
+
+model Batch {
+  id                 Int       @id @default(autoincrement())
+  enclosureId        Int       @unique
+  name               String?
+  wheightAverage     Float
+  animalQuantity     Int
+  earringStartNumber Int
+  breed              String
+  age                Int
+  bornDate           DateTime
+  observation        String?
+  situation          String
+  enclosure          Enclosure @relation(fields: [enclosureId], references: [id])
 }

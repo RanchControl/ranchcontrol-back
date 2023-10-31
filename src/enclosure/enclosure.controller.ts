@@ -30,6 +30,11 @@ export class EnclosureController {
     return this.enclosureService.findOne(+id);
   }
 
+  @Get('enclosures-farm/:farmId')
+  findEnclosuresByFarm(@Param('farmId') farmId: number) {
+    return this.enclosureService.findEnclosuresByFarm(+farmId);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
