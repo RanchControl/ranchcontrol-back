@@ -7,26 +7,30 @@ import { PrismaService } from 'nestjs-prisma';
 export class FarmsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createFarmDto: CreateFarmDto) {
+  async create(createFarmDto: CreateFarmDto) {
     const data = createFarmDto;
-    return this.prisma.farm.create({ data });
+    return await this.prisma.farm.create({ data });
   }
 
-  findAll() {
-    return this.prisma.farm.findMany();
+  async findAll() {
+    return await this.prisma.farm.findMany();
   }
 
   async findOne(id: number) {
     return await this.prisma.farm.findUniqueOrThrow({ where: { id } });
   }
 
-  update(id: number, updateFarmDto: UpdateFarmDto) {
+  async update(id: number, updateFarmDto: UpdateFarmDto) {
     const data = updateFarmDto;
 
-    return this.prisma.farm.update({
+    return await this.prisma.farm.update({
       where: { id },
       data,
     });
+  }
+
+  async findFarmsByUser(userId: number) {
+    return await this.prisma.farm.findMany({ where: { userId } });
   }
 
   async remove(id: number) {
