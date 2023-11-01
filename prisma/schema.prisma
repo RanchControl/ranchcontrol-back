@@ -29,13 +29,64 @@ model User {
 }
 
 model Farm {
-  id        Int       @id @default(autoincrement())
-  userId    Int
-  name      String
-  CNPJ      String
-  address   String
-  createdAt DateTime  @default(now())
-  updateAt  DateTime  @updatedAt
-  deletedAt DateTime?
-  user      User      @relation(fields: [userId], references: [id])
+  id         Int         @id @default(autoincrement())
+  userId     Int
+  name       String
+  cnpj       String
+  address    String
+  createdAt  DateTime    @default(now())
+  updateAt   DateTime    @updatedAt
+  deletedAt  DateTime?
+  user       User        @relation(fields: [userId], references: [id])
+  enclosures Enclosure[]
+}
+
+model Enclosure {
+  id      Int      @id @default(autoincrement())
+  farmId  Int
+  name    String
+  type    String
+  farm    Farm     @relation(fields: [farmId], references: [id])
+  batch   Batch?
+  animals Animal[]
+}
+
+model Batch {
+  id                 Int       @id @default(autoincrement())
+  enclosureId        Int       @unique
+  name               String?
+  wheightAverage     Float
+  animalQuantity     Int
+  earringStartNumber Int?
+  breed              String
+  age                Int
+  bornDate           DateTime
+  observation        String?
+  situation          String
+  enclosure          Enclosure @relation(fields: [enclosureId], references: [id])
+  animals            Animal[]
+}
+
+model Animal {
+  id           Int        @id @default(autoincrement())
+  name         String?
+  number       Int?       @unique
+  sex          String?
+  breed        String
+  bornDate     DateTime?
+  bornWheight  Float?
+  entryDate    DateTime
+  entryWheight Float?
+  weaningDate  DateTime?
+  fitnessDate  DateTime?
+  type         String?
+  weight       Float?
+  status       String?
+  category     String?
+  prefix       String?
+  suffix       String?
+  enclosureId  Int?
+  batchId      Int?
+  Batch        Batch?     @relation(fields: [batchId], references: [id])
+  Enclosure    Enclosure? @relation(fields: [enclosureId], references: [id])
 }

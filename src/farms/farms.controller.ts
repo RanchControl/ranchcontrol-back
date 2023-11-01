@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FarmsService } from './farms.service';
 import { CreateFarmDto } from './dto/create-farm.dto';
 import { UpdateFarmDto } from './dto/update-farm.dto';
@@ -20,6 +28,11 @@ export class FarmsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.farmsService.findOne(+id);
+  }
+
+  @Get('farms-user/:userId')
+  findFarmsByUSer(@Param('userId') userId: string) {
+    return this.farmsService.findFarmsByUser(+userId);
   }
 
   @Patch(':id')
