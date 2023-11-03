@@ -6,9 +6,10 @@ import { FarmsModule } from './farms/farms.module';
 import { EnclosureModule } from './enclosure/enclosure.module';
 import { BatchsModule } from './batchs/batchs.module';
 import { AnimalsModule } from './animals/animals.module';
-import { APP_FILTER, HttpAdapterHost } from '@nestjs/core';
-import { PrismaClientExceptionFilter } from 'nestjs-prisma';
-import { PrismaModule } from './prisma/prisma.module';
+import {
+  PrismaModule,
+  providePrismaClientExceptionFilter,
+} from 'nestjs-prisma';
 
 @Module({
   imports: [
@@ -21,14 +22,6 @@ import { PrismaModule } from './prisma/prisma.module';
     AnimalsModule,
   ],
 
-  providers: [
-    {
-      provide: APP_FILTER,
-      useFactory: ({ httpAdapter }: HttpAdapterHost) => {
-        return new PrismaClientExceptionFilter(httpAdapter);
-      },
-      inject: [HttpAdapterHost],
-    },
-  ],
+  providers: [providePrismaClientExceptionFilter()],
 })
 export class AppModule {}
