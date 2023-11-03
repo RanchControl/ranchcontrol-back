@@ -22,11 +22,8 @@ export class FarmsController {
   }
 
   @Get()
-  findAll(@Query('user') user: string) {
-    if (user != undefined) {
-      return this.farmsService.findFarmsByUser(+user);
-    }
-    return this.farmsService.findAll();
+  findAll(@Query('user') user: string, @Query('search') search: string) {
+    return this.farmsService.findFarmsByUser(+user, search);
   }
 
   @Get(':id')

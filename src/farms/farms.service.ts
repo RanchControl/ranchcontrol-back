@@ -41,8 +41,19 @@ export class FarmsService {
     });
   }
 
-  async findFarmsByUser(userId: number) {
-    return await this.prisma.farm.findMany({ where: { user: userId } });
+  async findFarmsByUser(userId: number, search: string) {
+    return await this.prisma.farm.findMany({
+      where: {
+        AND: [
+          { user: userId ? Number(userId) : undefined },
+          {
+            name: {
+              contains: search,
+            },
+          },
+        ],
+      },
+    });
   }
 
   async remove(id: number) {
