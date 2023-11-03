@@ -30,40 +30,46 @@ model User {
 
 model Farm {
   id         Int         @id @default(autoincrement())
-  userId     Int
+  user       Int
   name       String
   cnpj       String      @unique @db.VarChar(14)
   address    String
   createdAt  DateTime    @default(now())
   updateAt   DateTime    @updatedAt
   deletedAt  DateTime?
-  user       User        @relation(fields: [userId], references: [id])
+  users      User        @relation(fields: [user], references: [id])
   enclosures Enclosure[]
 }
 
 model Enclosure {
-  id      Int      @id @default(autoincrement())
-  farmId  Int
-  name    String
-  type    String
-  farm    Farm     @relation(fields: [farmId], references: [id])
-  batch   Batch?
-  animals Animal[]
+  id        Int       @id @default(autoincrement())
+  farm      Int
+  name      String
+  type      String
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  deletedAt DateTime?
+  farms     Farm      @relation(fields: [farm], references: [id])
+  batch     Batch?
+  animals   Animal[]
 }
 
 model Batch {
   id                 Int       @id @default(autoincrement())
-  enclosureId        Int       @unique
+  enclosure          Int       @unique
   name               String?
-  wheightAverage     Float
-  animalQuantity     Int
+  wheightAverage     Float?    @default(0)
+  animalQuantity     Int?      @default(0)
   earringStartNumber Int?
   breed              String
   age                Int
   bornDate           DateTime
   observation        String?
   situation          String
-  enclosure          Enclosure @relation(fields: [enclosureId], references: [id])
+  createdAt          DateTime  @default(now())
+  updateAt           DateTime  @updatedAt
+  deletedAt          DateTime?
+  enclosures         Enclosure @relation(fields: [enclosure], references: [id])
   animals            Animal[]
 }
 
@@ -85,8 +91,11 @@ model Animal {
   category     String?
   prefix       String?
   suffix       String?
-  enclosureId  Int?
-  batchId      Int?
-  Batch        Batch?     @relation(fields: [batchId], references: [id])
-  Enclosure    Enclosure? @relation(fields: [enclosureId], references: [id])
+  enclosure    Int?
+  batch        Int?
+  createdAt    DateTime   @default(now())
+  updateAt     DateTime   @updatedAt
+  deletedAt    DateTime?
+  batchs       Batch?     @relation(fields: [batch], references: [id])
+  enclosures   Enclosure? @relation(fields: [enclosure], references: [id])
 }

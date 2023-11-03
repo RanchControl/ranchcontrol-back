@@ -25,8 +25,8 @@ export class EnclosureService {
     return enclosure;
   }
 
-  async findEnclosuresByFarm(farmId: number) {
-    return await this.prisma.enclosure.findMany({ where: { farmId } });
+  async findEnclosuresByFarm(farm: number) {
+    return await this.prisma.enclosure.findMany({ where: { farm } });
   }
 
   async update(id: number, updateEnclosureDto: UpdateEnclosureDto) {

@@ -1,5 +1,8 @@
 export class Enclosure {
-  farmId: number;
+  farm: number;
   name: string;
   type: string;
+  createdAt: Date;
+  updateAt: Date;
+  deletedAt: Date;
 }

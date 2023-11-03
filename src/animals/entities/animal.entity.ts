@@ -16,6 +16,9 @@ export class Animal {
   category?: string;
   prefix?: string;
   suffix?: string;
-  enclosureId?: number;
-  batchId?: number;
+  enclosure?: number;
+  batch?: number;
+  createdAt: Date;
+  updateAt: Date;
+  deletedAt: Date;
 }

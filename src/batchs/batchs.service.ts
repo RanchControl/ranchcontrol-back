@@ -7,17 +7,17 @@ import { PrismaService } from 'nestjs-prisma';
 export class BatchsService {
   constructor(private prisma: PrismaService) {}
   async create(createBatchDto: CreateBatchDto) {
-    const { enclosureId } = createBatchDto;
+    const { enclosure } = createBatchDto;
 
     const existingBatch = await this.prisma.batch.findFirst({
       where: {
-        enclosureId,
+        enclosure,
       },
     });
 
     const existingAnimals = await this.prisma.animal.findFirst({
       where: {
-        enclosureId,
+        enclosure,
       },
     });
 
@@ -49,7 +49,7 @@ export class BatchsService {
 
   async findBatchsByFarm(farmId: number) {
     return await this.prisma.batch.findMany({
-      where: { enclosure: { farmId: farmId } },
+      where: { enclosures: { farm: farmId } },
     });
   }
 
