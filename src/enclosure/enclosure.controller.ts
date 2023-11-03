@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { EnclosureService } from './enclosure.service';
 import { CreateEnclosureDto } from './dto/create-enclosure.dto';
@@ -21,18 +22,16 @@ export class EnclosureController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('farm') farm: string) {
+    if (farm != undefined) {
+      return this.enclosureService.findEnclosuresByFarm(+farm);
+    }
     return this.enclosureService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.enclosureService.findOne(+id);
-  }
-
-  @Get('enclosures-farm/:farmId')
-  findEnclosuresByFarm(@Param('farmId') farmId: number) {
-    return this.enclosureService.findEnclosuresByFarm(+farmId);
   }
 
   @Patch(':id')

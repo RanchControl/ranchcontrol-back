@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FarmsService } from './farms.service';
 import { CreateFarmDto } from './dto/create-farm.dto';
@@ -21,18 +22,16 @@ export class FarmsController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('user') user: string) {
+    if (user != undefined) {
+      return this.farmsService.findFarmsByUser(+user);
+    }
     return this.farmsService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.farmsService.findOne(+id);
-  }
-
-  @Get('farms-user/:userId')
-  findFarmsByUSer(@Param('userId') userId: string) {
-    return this.farmsService.findFarmsByUser(+userId);
   }
 
   @Patch(':id')
