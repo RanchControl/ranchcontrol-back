@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { BatchsService } from './batchs.service';
 import { CreateBatchDto } from './dto/create-batch.dto';
@@ -21,18 +22,16 @@ export class BatchsController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('farm') farm: string) {
+    if (farm != undefined) {
+      return this.batchsService.findBatchsByFarm(+farm);
+    }
     return this.batchsService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.batchsService.findOne(+id);
-  }
-
-  @Get('batchs-farma/:farmId')
-  findBatchesByFarm(@Param('farmId') farmId: number) {
-    return this.batchsService.findBatchsByFarm(+farmId);
   }
 
   @Patch(':id')
