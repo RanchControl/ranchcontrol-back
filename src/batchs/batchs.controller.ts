@@ -1,6 +1,16 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import { BatchsService } from './batchs.service';
 import { CreateBatchDto } from './dto/create-batch.dto';
+import { UpdateBatchDto } from './dto/update-batch.dto';
 
 @Controller('batchs')
 export class BatchsController {
@@ -12,7 +22,10 @@ export class BatchsController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('farm') farm: string) {
+    if (farm != undefined) {
+      return this.batchsService.findBatchsByFarm(+farm);
+    }
     return this.batchsService.findAll();
   }
 
@@ -21,10 +34,10 @@ export class BatchsController {
     return this.batchsService.findOne(+id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateBatchDto: UpdateBatchDto) {
-  //   return this.batchsService.update(+id, updateBatchDto);
-  // }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateBatchDto: UpdateBatchDto) {
+    return this.batchsService.update(+id, updateBatchDto);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

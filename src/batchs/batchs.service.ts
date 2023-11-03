@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateBatchDto } from './dto/create-batch.dto';
 import { UpdateBatchDto } from './dto/update-batch.dto';
 import { PrismaService } from 'nestjs-prisma';
@@ -7,26 +7,30 @@ import { PrismaService } from 'nestjs-prisma';
 export class BatchsService {
   constructor(private prisma: PrismaService) {}
   async create(createBatchDto: CreateBatchDto) {
+    const { enclosureId } = createBatchDto;
+
+    const existingBatch = await this.prisma.batch.findFirst({
+      where: {
+        enclosureId,
+      },
+    });
+
+    const existingAnimals = await this.prisma.animal.findFirst({
+      where: {
+        enclosureId,
+      },
+    });
+
+    if (existingBatch || existingAnimals) {
+      throw new HttpException(
+        'Não é possível cadastrar um novo batch neste enclosure. Animal ou batch ja cadastrado nesse enclosure',
+        HttpStatus.NOT_ACCEPTABLE
+      );
+    }
+
     const createdBatch = await this.prisma.batch.create({
       data: createBatchDto,
     });
-
-    const { earringStartNumber, animalQuantity } = createBatchDto;
-
-    function generateSequentialNumbers(start, end) {
-      return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-    }
-
-    // Gere números sequenciais
-    const sequentialNumbers = generateSequentialNumbers(
-      earringStartNumber,
-      earringStartNumber + animalQuantity - 1
-    );
-
-    for (const number of sequentialNumbers) {
-      // realizar o cadastro de animais com os numeros gerados (lembrar de deixar o numero do animal @unique)
-      console.log(number);
-    }
 
     return createdBatch;
   }
@@ -40,6 +44,12 @@ export class BatchsService {
       where: {
         id,
       },
+    });
+  }
+
+  async findBatchsByFarm(farmId: number) {
+    return await this.prisma.batch.findMany({
+      where: { enclosure: { farmId: farmId } },
     });
   }
 
