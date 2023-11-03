@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString, Min } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { User } from '../entities/user.entity';
 import { Role } from '@prisma/client';
 
@@ -10,7 +10,6 @@ export class CreateUserDto implements User {
   username: string;
 
   @IsString()
-  @Min(6)
   @IsNotEmpty()
   password: string;
 
@@ -25,4 +24,8 @@ export class CreateUserDto implements User {
   @IsNotEmpty()
   @IsString()
   phoneNumber: string;
+
+  createdAt: Date;
+  updateAt: Date;
+  deletedAt: Date;
 }

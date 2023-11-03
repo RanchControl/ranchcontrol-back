@@ -7,4 +7,7 @@ export class User {
   fullName: string;
   role: Role;
   phoneNumber: string;
+  createdAt: Date;
+  updateAt: Date;
+  deletedAt: Date;
 }

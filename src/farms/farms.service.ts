@@ -42,7 +42,7 @@ export class FarmsService {
   }
 
   async findFarmsByUser(userId: number) {
-    return await this.prisma.farm.findMany({ where: { userId } });
+    return await this.prisma.farm.findMany({ where: { user: userId } });
   }
 
   async remove(id: number) {
