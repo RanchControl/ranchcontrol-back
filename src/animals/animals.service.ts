@@ -54,11 +54,16 @@ export class AnimalsService {
   }
 
   async findAll() {
-    return await this.prisma.animal.findMany();
+    return await this.prisma.animal.findMany({
+      include: { enclosures: true, batchs: true },
+    });
   }
 
   async findOne(id: number) {
-    return await this.prisma.animal.findUniqueOrThrow({ where: { id } });
+    return await this.prisma.animal.findUniqueOrThrow({
+      where: { id },
+      include: { enclosures: true, batchs: true },
+    });
   }
   async findAnimalsByFarm(farmId: number) {
     return await this.prisma.animal.findMany({
@@ -77,6 +82,10 @@ export class AnimalsService {
             },
           },
         ],
+      },
+      include: {
+        enclosures: true,
+        batchs: true,
       },
     });
   }

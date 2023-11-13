@@ -58,7 +58,7 @@ model Batch {
   id                 Int       @id @default(autoincrement())
   enclosure          Int       @unique
   name               String?
-  wheightAverage     Float?    @default(0)
+  weightAverage      Float?    @default(0)
   animalQuantity     Int?      @default(0)
   earringStartNumber Int?
   breed              String
