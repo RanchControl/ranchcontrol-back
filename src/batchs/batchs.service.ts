@@ -36,7 +36,7 @@ export class BatchsService {
   }
 
   async findAll() {
-    return await this.prisma.batch.findMany();
+    return await this.prisma.batch.findMany({ include: { enclosures: true } });
   }
 
   async findOne(id: number) {
@@ -44,12 +44,18 @@ export class BatchsService {
       where: {
         id,
       },
+      include: {
+        enclosures: true,
+      },
     });
   }
 
   async findBatchsByFarm(farmId: number) {
     return await this.prisma.batch.findMany({
       where: { enclosures: { farm: farmId } },
+      include: {
+        enclosures: true,
+      },
     });
   }
 
