@@ -13,7 +13,9 @@ export class EnclosureService {
   }
 
   async findAll() {
-    const enclosures = await this.prisma.enclosure.findMany();
+    const enclosures = await this.prisma.enclosure.findMany({
+      include: { farms: true },
+    });
     if (!enclosures.length) throw new NotFoundException(`No enclosures found`);
     return enclosures;
   }
@@ -21,12 +23,16 @@ export class EnclosureService {
   async findOne(id: number) {
     const enclosure = await this.prisma.enclosure.findUniqueOrThrow({
       where: { id },
+      include: { farms: true },
     });
     return enclosure;
   }
 
-  async findEnclosuresByFarm(farmId: number) {
-    return await this.prisma.enclosure.findMany({ where: { farmId } });
+  async findEnclosuresByFarm(farm: number) {
+    return await this.prisma.enclosure.findMany({
+      where: { farm },
+      include: { farms: true },
+    });
   }
 
   async update(id: number, updateEnclosureDto: UpdateEnclosureDto) {

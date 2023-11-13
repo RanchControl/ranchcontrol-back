@@ -1,5 +1,5 @@
 export class Farm {
-  userId: number;
+  user: number;
   name: string;
   cnpj: string;
   address: string;

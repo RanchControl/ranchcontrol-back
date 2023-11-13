@@ -25,11 +25,14 @@ export class FarmsService {
   }
 
   async findAll() {
-    return await this.prisma.farm.findMany();
+    return await this.prisma.farm.findMany({ include: { users: true } });
   }
 
   async findOne(id: number) {
-    return await this.prisma.farm.findUniqueOrThrow({ where: { id } });
+    return await this.prisma.farm.findUniqueOrThrow({
+      where: { id },
+      include: { users: true },
+    });
   }
 
   async update(id: number, updateFarmDto: UpdateFarmDto) {
@@ -41,8 +44,22 @@ export class FarmsService {
     });
   }
 
-  async findFarmsByUser(userId: number) {
-    return await this.prisma.farm.findMany({ where: { userId } });
+  async findFarmsByUser(userId: number, search: string) {
+    return await this.prisma.farm.findMany({
+      where: {
+        AND: [
+          { user: userId ? Number(userId) : undefined },
+          {
+            name: {
+              contains: search,
+            },
+          },
+        ],
+      },
+      include: {
+        users: true,
+      },
+    });
   }
 
   async remove(id: number) {

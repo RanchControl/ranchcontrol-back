@@ -9,9 +9,9 @@ export class AnimalsService {
   constructor(private prisma: PrismaService) {}
 
   async create(createAnimalDto: CreateAnimalDto) {
-    if (createAnimalDto.enclosureId) {
+    if (createAnimalDto.enclosure) {
       const enclosure = await this.prisma.enclosure.findUnique({
-        where: { id: createAnimalDto.enclosureId },
+        where: { id: createAnimalDto.enclosure },
         include: { batch: true },
       });
 
@@ -23,8 +23,8 @@ export class AnimalsService {
       }
     }
     if (
-      createAnimalDto.enclosureId !== undefined &&
-      createAnimalDto.batchId !== undefined
+      createAnimalDto.enclosure !== undefined &&
+      createAnimalDto.batch !== undefined
     ) {
       throw new HttpException(
         'Não é possível adicionar o animal em um recinto e um lote ao mesmo tempo.',
@@ -33,8 +33,8 @@ export class AnimalsService {
     }
 
     if (
-      createAnimalDto.enclosureId === undefined &&
-      createAnimalDto.batchId === undefined
+      createAnimalDto.enclosure === undefined &&
+      createAnimalDto.batch === undefined
     ) {
       throw new HttpException(
         'É necessário especificar um recinto ou um lote ao criar o animal.',
@@ -54,29 +54,38 @@ export class AnimalsService {
   }
 
   async findAll() {
-    return await this.prisma.animal.findMany();
+    return await this.prisma.animal.findMany({
+      include: { enclosures: true, batchs: true },
+    });
   }
 
   async findOne(id: number) {
-    return await this.prisma.animal.findUniqueOrThrow({ where: { id } });
+    return await this.prisma.animal.findUniqueOrThrow({
+      where: { id },
+      include: { enclosures: true, batchs: true },
+    });
   }
   async findAnimalsByFarm(farmId: number) {
     return await this.prisma.animal.findMany({
       where: {
         OR: [
           {
-            Enclosure: {
-              farmId: farmId,
+            enclosures: {
+              farm: farmId,
             },
           },
           {
-            Batch: {
-              enclosure: {
-                farmId: farmId,
+            batchs: {
+              enclosures: {
+                farm: farmId,
               },
             },
           },
         ],
+      },
+      include: {
+        enclosures: true,
+        batchs: true,
       },
     });
   }

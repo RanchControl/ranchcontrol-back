@@ -1,14 +1,34 @@
+import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Batch } from '../entities/batch.entity';
 
 export class CreateBatchDto implements Batch {
+  @IsString()
   name?: string;
-  wheightAverage: number;
-  animalQuantity: number;
-  earringStartNumber: number;
+  @IsNumber()
+  wheightAverage?: number;
+  @IsNumber()
+  animalQuantity?: number;
+  @IsNumber()
+  earringStartNumber?: number;
+  @IsNotEmpty()
+  @IsString()
   breed: string;
+  @IsNotEmpty()
+  @IsNumber()
   age: number;
+  @IsNotEmpty()
+  @IsDateString()
   bornDate: Date;
+  @IsString()
   observation?: string;
+  @IsNotEmpty()
+  @IsString()
   situation: string;
-  enclosureId: number;
+
+  @IsNumber()
+  enclosure: number;
+
+  createdAt: Date;
+  updateAt: Date;
+  deletedAt: Date;
 }

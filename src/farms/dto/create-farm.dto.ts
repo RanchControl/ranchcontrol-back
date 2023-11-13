@@ -4,7 +4,7 @@ import { Farm } from '../entities/farm.entity';
 export class CreateFarmDto implements Farm {
   @IsNotEmpty()
   @IsNumber()
-  userId: number;
+  user: number;
   @IsNotEmpty()
   @IsString()
   name: string;
