@@ -1,6 +1,6 @@
 export class Batch {
   name?: string;
-  wheightAverage?: number;
+  weightAverage?: number;
   animalQuantity?: number;
   earringStartNumber?: number;
   breed: string;

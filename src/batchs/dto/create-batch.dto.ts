@@ -5,7 +5,7 @@ export class CreateBatchDto implements Batch {
   @IsString()
   name?: string;
   @IsNumber()
-  wheightAverage?: number;
+  weightAverage?: number;
   @IsNumber()
   animalQuantity?: number;
   @IsNumber()
