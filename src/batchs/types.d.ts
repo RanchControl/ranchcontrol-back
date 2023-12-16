@@ -1,6 +1,6 @@
 interface BatchDto {
   name?: string;
-  wheightAverage: number;
+  weightAverage: number;
   animalQuantity: number;
   breed: string;
   age: number;
