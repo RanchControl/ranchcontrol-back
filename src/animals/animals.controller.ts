@@ -30,7 +30,8 @@ export class AnimalsController {
   }
 
   @Get(':id')
-  findOne(@Query('id') id: string) {
+  findOne(@Param('id') id: string) {
+    console.log('entrou no finOne');
     return this.animalsService.findOne(+id);
   }
 
